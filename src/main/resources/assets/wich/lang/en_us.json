@@ -1,0 +1,13 @@
+{
+  "subtitles.entity.cluckshroom.convert": "Cluckshroom transforms",
+  "subtitles.entity.cluckshroom.ambient": "Cluckshroom clucks",
+  "subtitles.entity.cluckshroom.death": "Cluckshroom dies",
+  "subtitles.entity.cluckshroom.egg": "Cluckshroom plops",
+  "subtitles.entity.cluckshroom.mushroom": "Cluckshroom plants",
+  "subtitles.entity.cluckshroom.hurt": "Cluckshroom hurts",
+  
+  "entity.wich.cluckshroom": "Cluckshroom",
+  "item.wich.cluckshroom_spawn_egg": "Cluckshroom Spawn Egg",
+  "item.wich.red_cluckshroom_egg": "Red Cluckshroom Egg",
+  "item.wich.brown_cluckshroom_egg": "Brown Cluckshroom Egg"
+}

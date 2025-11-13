@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "wich_cluckshrooms",
+	"version": "${version}",
+	"name": "Cluckshrooms",
+	"description": "Adds the Cluckshroom from Minecraft Earth and Minecraft Dungeons.",
+	"authors": [ "dovewich" ],
+	"contact": {
+		"homepage": "https://www.wich.fun/",
+		"sources": "https://github.com/OfficePigeon/Cluckshroom-Mod"
+	},
+	"license": "",
+	"icon": "assets/wich/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [ "fun.wich.CluckshroomMod" ],
+		"client": [ "fun.wich.client.ModClient" ]
+	},
+	"mixins": [
+		"wich.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": ">=1.21.9",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

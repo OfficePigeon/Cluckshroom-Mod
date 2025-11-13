@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+	{ "id": "wich:red_cluckshroom_egg", "required": false },
+	{ "id": "wich:brown_cluckshroom_egg", "required": false }
+  ]
+}

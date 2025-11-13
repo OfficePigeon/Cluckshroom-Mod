@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:shearing",
+  "pools": [
+	{
+	  "bonus_rolls": 0.0,
+	  "entries": [
+		{
+		  "type": "minecraft:alternatives",
+		  "children": [
+			{
+			  "type": "minecraft:loot_table",
+			  "conditions": [
+				{
+				  "condition": "minecraft:entity_properties",
+				  "predicate": { "nbt": "{Type:0}" },
+				  "entity": "this"
+				}
+			  ],
+			  "value": "wich:shearing/cluckshroom/red"
+			},
+			{
+			  "type": "minecraft:loot_table",
+			  "conditions": [
+				{
+				  "condition": "minecraft:entity_properties",
+				  "predicate": { "nbt": "{Type:1}" },
+				  "entity": "this"
+				}
+			  ],
+			  "value": "wich:shearing/cluckshroom/brown"
+			}
+		  ]
+		}
+	  ],
+	  "rolls": 1.0
+	}
+  ],
+  "random_sequence": "wich:shearing/cluckshroom"
+}

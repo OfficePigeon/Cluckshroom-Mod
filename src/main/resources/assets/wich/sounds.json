@@ -1,0 +1,37 @@
+{
+  "entity.cluckshroom.ambient": {
+	"sounds": [ "mob/chicken/say1", "mob/chicken/say2", "mob/chicken/say3" ],
+	"subtitle": "subtitles.entity.cluckshroom.ambient"
+  },
+  "entity.cluckshroom.death": {
+	"sounds": [ "mob/chicken/hurt1", "mob/chicken/hurt2" ],
+	"subtitle": "subtitles.entity.cluckshroom.death"
+  },
+  "entity.cluckshroom.egg": {
+	"sounds": [ "mob/chicken/plop" ],
+	"subtitle": "subtitles.entity.cluckshroom.egg"
+  },
+  "entity.cluckshroom.mushroom": {
+	"sounds": [ "wich:mob/cluckshroom/lay_mushroom" ],
+	"subtitle": "subtitles.entity.cluckshroom.mushroom"
+  },
+  "entity.cluckshroom.hurt": {
+	"sounds": [ "mob/chicken/hurt1", "mob/chicken/hurt2" ],
+	"subtitle": "subtitles.entity.cluckshroom.hurt"
+  },
+  "entity.cluckshroom.step": {
+	"sounds": [ "mob/chicken/step1", "mob/chicken/step2" ],
+	"subtitle": "subtitles.block.generic.footsteps"
+  },
+  "entity.cluckshroom.shear": {
+	"sounds": [ "mob/sheep/shear" ],
+	"subtitle": "subtitles.item.shears.shear"
+  },
+  "entity.cluckshroom.convert": {
+	"sounds": [
+	  { "name": "mob/evocation_illager/cast1", "volume": 0.75 },
+	  { "name": "mob/evocation_illager/cast2", "volume": 0.75 }
+	],
+	"subtitle": "subtitles.entity.cluckshroom.convert"
+  }
+}
