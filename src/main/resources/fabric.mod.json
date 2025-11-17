@@ -14,7 +14,9 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [ "fun.wich.CluckshroomMod" ],
-		"client": [ "fun.wich.client.ModClient" ]
+		"client": [
+		  "fun.wich.client.CluckshroomClient"
+		]
 	},
 	"mixins": [
 		"wich.cluckshrooms.mixins.json"

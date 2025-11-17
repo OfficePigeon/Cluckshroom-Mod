@@ -95,8 +95,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	public ActionResult interactMob(PlayerEntity player, Hand hand) {
 		ItemStack itemStack = player.getStackInHand(hand);
 		if (itemStack.isOf(Items.SHEARS) && this.isShearable()) {
-			World var11 = this.getEntityWorld();
-			if (var11 instanceof ServerWorld serverWorld) {
+			if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
 				this.sheared(serverWorld, SoundCategory.PLAYERS, itemStack);
 				this.emitGameEvent(GameEvent.SHEAR, player);
 				itemStack.damage(1, player, hand.getEquipmentSlot());

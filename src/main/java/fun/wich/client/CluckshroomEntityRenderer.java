@@ -25,9 +25,9 @@ public class CluckshroomEntityRenderer extends MobEntityRenderer<CluckshroomEnti
 		map.put(CluckshroomEntity.Variant.RED, Identifier.of(CluckshroomMod.MOD_ID, "textures/entity/cluckshroom/cluckshroom_red.png"));
 	});
 	public CluckshroomEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new CluckshroomEntityModel(context.getPart(ModClient.CLUCKSHROOM)), 0.3F);
+		super(context, new CluckshroomEntityModel(context.getPart(CluckshroomClient.CLUCKSHROOM)), 0.3F);
 		this.adultModel = this.model;
-		this.babyModel = new CluckshroomEntityModel(context.getPart(ModClient.CLUCKSHROOM_BABY));
+		this.babyModel = new CluckshroomEntityModel(context.getPart(CluckshroomClient.CLUCKSHROOM_BABY));
 	}
 
 	public void render(CluckshroomEntityRenderState chickenEntityRenderState, MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue, CameraRenderState cameraRenderState) {

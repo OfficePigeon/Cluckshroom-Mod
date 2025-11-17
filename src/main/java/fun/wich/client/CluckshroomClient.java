@@ -11,7 +11,7 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class ModClient implements ClientModInitializer {
+public class CluckshroomClient implements ClientModInitializer {
 	public static final EntityModelLayer CLUCKSHROOM = MakeModelLayer("cluckshroom");
 	public static final EntityModelLayer CLUCKSHROOM_BABY = MakeModelLayer("cluckshroom_baby");
 	private static EntityModelLayer MakeModelLayer(String id) {
