@@ -1,0 +1,15 @@
+{
+  "subtitles.entity.cluckshroom.convert": "Клакшрум перетворюється",
+  "subtitles.entity.cluckshroom.ambient": "Клакшрум кудахче",
+  "subtitles.entity.cluckshroom.death": "Клакшрум гине",
+  "subtitles.entity.cluckshroom.egg": "Клакшрум зносить яйце",
+  "subtitles.entity.cluckshroom.mushroom": "Клакшрум росте",
+  "subtitles.entity.cluckshroom.hurt": "Клакшрум гине",
+  
+  "entity.wich.cluckshroom": "Клакшрум",
+  "item.wich.cluckshroom_spawn_egg": "Яйце виклику клакшума",
+  "item.wich.red_cluckshroom_egg": "Яйце коричневого клакшума",
+  "item.wich.brown_cluckshroom_egg": "Яйце коричневого клакшума",
+  
+  "modmenu.descriptionTranslation.wich_cluckshrooms": "Додає клашшрумів із Minecraft Earth і Dungeons."
+}
