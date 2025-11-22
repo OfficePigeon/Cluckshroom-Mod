@@ -1,0 +1,13 @@
+{
+  "subtitles.entity.cluckshroom.convert": "Shroomfowl shapeshifts",
+  "subtitles.entity.cluckshroom.ambient": "Shroomfowl clucks",
+  "subtitles.entity.cluckshroom.death": "Shroomfowl perishes",
+  "subtitles.entity.cluckshroom.egg": "Shroomfowl plops",
+  "subtitles.entity.cluckshroom.mushroom": "Shroomfowl plants",
+  "subtitles.entity.cluckshroom.hurt": "Shroomfowl gets hurt",
+  
+  "entity.wich.cluckshroom": "Shroomfowl",
+  "item.wich.cluckshroom_spawn_egg": "Shroomfowl Cackle Fruit",
+  "item.wich.red_cluckshroom_egg": "Scarlet Shroomfowl Cackle Fruit",
+  "item.wich.brown_cluckshroom_egg": "Tarnish'd Shroomfowl Cackle Fruit"
+}

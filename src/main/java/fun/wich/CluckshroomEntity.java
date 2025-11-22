@@ -106,7 +106,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	}
 	public void sheared(ServerWorld world, SoundCategory shearedSoundCategory, ItemStack shears) {
 		world.playSoundFromEntity(null, this, CluckshroomMod.ENTITY_CLUCKSHROOM_SHEAR, shearedSoundCategory, 1, 1);
-		this.convertTo(EntityType.CHICKEN, EntityConversionContext.create(this, false, false), (cow) -> {
+		this.convertTo(EntityType.CHICKEN, EntityConversionContext.create(this, false, false), (chicken) -> {
 			world.spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getBodyY(0.5F), this.getZ(), 1, 0, 0, 0, 0);
 			this.forEachShearedItem(world, CluckshroomMod.CLUCKSHROOM_SHEARING, shears, (worldx, stack) -> {
 				for (int i = 0; i < stack.getCount(); ++i) {
@@ -201,17 +201,14 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	}
 	public boolean hasJockey() { return this.hasJockey; }
 	public void setHasJockey(boolean hasJockey) { this.hasJockey = hasJockey; }
-
 	public enum Variant implements StringIdentifiable {
 		RED("red", 0, Blocks.RED_MUSHROOM.getDefaultState()),
 		BROWN("brown", 1, Blocks.BROWN_MUSHROOM.getDefaultState());
-
 		public static final Variant DEFAULT = RED;
 		private static final IntFunction<Variant> INDEX_MAPPER = ValueLists.createIndexToValueFunction(Variant::getIndex, values(), ValueLists.OutOfBoundsHandling.CLAMP);
 		private final String name;
 		private final int index;
 		private final BlockState mushroom;
-
 		Variant(final String name, final int index, final BlockState mushroom) {
 			this.name = name;
 			this.index = index;
