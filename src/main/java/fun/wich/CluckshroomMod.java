@@ -1,6 +1,6 @@
 package fun.wich;
 
-import fun.wich.mixin.LootTablesMixin;
+import fun.wich.mixin.Cluckshrooms_LootTablesMixin;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -46,7 +46,7 @@ public class CluckshroomMod implements ModInitializer {
 	public static final RegistryKey<LootTable> CLUCKSHROOM_LAY_GAMEPLAY = registerLootTable("gameplay/cluckshroom_lay");
 	public static final RegistryKey<LootTable> CLUCKSHROOM_SHEARING = registerLootTable("shearing/cluckshroom");
 	private static RegistryKey<LootTable> registerLootTable(String name) {
-		return LootTablesMixin.registerLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(MOD_ID, name)));
+		return Cluckshrooms_LootTablesMixin.registerLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(MOD_ID, name)));
 	}
 
 	public static final TagKey<Item> TAG_CLUCKSHROOM_FOOD = TagKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, "cluckshroom_food"));

@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(ZombieEntity.class)
-public abstract class ZombieEntityMixin extends HostileEntity {
-	protected ZombieEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
+public abstract class Cluckshrooms_ZombieEntityMixin extends HostileEntity {
+	protected Cluckshrooms_ZombieEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 	@Inject(method="initialize", at=@At("TAIL"))
