@@ -19,6 +19,7 @@ public class CluckshroomEggEntity extends ThrownItemEntity {
 	public CluckshroomEggEntity(World world, double x, double y, double z, ItemStack stack) {
 		super(CluckshroomMod.CLUCKSHROOM_EGG, x, y, z, world, stack);
 	}
+	@Override
 	public void handleStatus(byte status) {
 		if (status == 3) {
 			for (int i = 0; i < 8; ++i) {
@@ -26,8 +27,10 @@ public class CluckshroomEggEntity extends ThrownItemEntity {
 			}
 		}
 	}
+	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		super.onEntityHit(entityHitResult);
+		//noinspection deprecation
 		entityHitResult.getEntity().serverDamage(this.getDamageSources().thrown(this, this.getOwner()), 0);
 	}
 	@Override
@@ -54,5 +57,5 @@ public class CluckshroomEggEntity extends ThrownItemEntity {
 			this.discard();
 		}
 	}
-	protected Item getDefaultItem() { return CluckshroomMod.RED_CLUCKSHROOM_EGG; }
+	@Override protected Item getDefaultItem() { return CluckshroomMod.RED_CLUCKSHROOM_EGG; }
 }

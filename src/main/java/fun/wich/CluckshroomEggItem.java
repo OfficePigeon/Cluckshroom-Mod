@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 
 public class CluckshroomEggItem extends Item implements ProjectileItem {
 	public CluckshroomEggItem(Item.Settings settings) { super(settings); }
+	@Override
 	public ActionResult use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
 		world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));

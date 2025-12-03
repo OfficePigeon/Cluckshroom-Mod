@@ -20,7 +20,7 @@ import java.util.Map;
 public class CluckshroomEntityRenderer extends MobEntityRenderer<CluckshroomEntity, CluckshroomEntityRenderState, CluckshroomEntityModel> {
 	protected final CluckshroomEntityModel adultModel;
 	protected final CluckshroomEntityModel babyModel;
-	private static final Map<CluckshroomEntity.Variant, Identifier> TEXTURES = Util.make(Maps.newHashMap(), (map) -> {
+	protected static final Map<CluckshroomEntity.Variant, Identifier> TEXTURES = Util.make(Maps.newHashMap(), (map) -> {
 		map.put(CluckshroomEntity.Variant.BROWN, Identifier.of(CluckshroomMod.MOD_ID, "textures/entity/cluckshroom/cluckshroom_brown.png"));
 		map.put(CluckshroomEntity.Variant.RED, Identifier.of(CluckshroomMod.MOD_ID, "textures/entity/cluckshroom/cluckshroom_red.png"));
 	});
@@ -29,24 +29,21 @@ public class CluckshroomEntityRenderer extends MobEntityRenderer<CluckshroomEnti
 		this.adultModel = this.model;
 		this.babyModel = new CluckshroomEntityModel(context.getPart(CluckshroomClient.CLUCKSHROOM_BABY));
 	}
-
+	@Override
 	public void render(CluckshroomEntityRenderState chickenEntityRenderState, MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue, CameraRenderState cameraRenderState) {
 		this.model = chickenEntityRenderState.baby ? babyModel : adultModel;
 		super.render(chickenEntityRenderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);
 	}
-
+	@Override
 	public Identifier getTexture(CluckshroomEntityRenderState chickenEntityRenderState) {
 		return TEXTURES.get(chickenEntityRenderState.type);
 	}
-
-	public CluckshroomEntityRenderState createRenderState() {
-		return new CluckshroomEntityRenderState();
-	}
-
-	public void updateRenderState(CluckshroomEntity chickenEntity, CluckshroomEntityRenderState chickenEntityRenderState, float f) {
-		super.updateRenderState(chickenEntity, chickenEntityRenderState, f);
-		chickenEntityRenderState.flapProgress = MathHelper.lerp(f, chickenEntity.lastFlapProgress, chickenEntity.flapProgress);
-		chickenEntityRenderState.maxWingDeviation = MathHelper.lerp(f, chickenEntity.lastMaxWingDeviation, chickenEntity.maxWingDeviation);
-		chickenEntityRenderState.type = chickenEntity.getVariant();
+	@Override public CluckshroomEntityRenderState createRenderState() { return new CluckshroomEntityRenderState(); }
+	@Override
+	public void updateRenderState(CluckshroomEntity entity, CluckshroomEntityRenderState state, float f) {
+		super.updateRenderState(entity, state, f);
+		state.flapProgress = MathHelper.lerp(f, entity.lastFlapProgress, entity.flapProgress);
+		state.maxWingDeviation = MathHelper.lerp(f, entity.lastMaxWingDeviation, entity.maxWingDeviation);
+		state.type = entity.getVariant();
 	}
 }

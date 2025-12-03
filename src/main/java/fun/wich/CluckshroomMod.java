@@ -42,16 +42,13 @@ public class CluckshroomMod implements ModInitializer {
 		Identifier id = Identifier.of(MOD_ID, path);
 		return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
 	}
-
 	public static final RegistryKey<LootTable> CLUCKSHROOM_LAY_GAMEPLAY = registerLootTable("gameplay/cluckshroom_lay");
 	public static final RegistryKey<LootTable> CLUCKSHROOM_SHEARING = registerLootTable("shearing/cluckshroom");
 	private static RegistryKey<LootTable> registerLootTable(String name) {
 		return Cluckshrooms_LootTablesMixin.registerLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(MOD_ID, name)));
 	}
-
 	public static final TagKey<Item> TAG_CLUCKSHROOM_FOOD = TagKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, "cluckshroom_food"));
 	public static final TagKey<Block> TAG_CLUCKSHROOMS_SPAWNABLE_ON = TagKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, "cluckshrooms_spawnable_on"));
-
 	public static final EntityType<CluckshroomEntity> CLUCKSHROOM = register(
 			"cluckshroom",
 			EntityType.Builder.create(CluckshroomEntity::new, SpawnGroup.MONSTER)
@@ -70,20 +67,15 @@ public class CluckshroomMod implements ModInitializer {
 	);
 	private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> type) {
 		RegistryKey<EntityType<?>> key = RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(MOD_ID, name));
-		EntityType<T> entityType = type.build(key);
-		Registry.register(Registries.ENTITY_TYPE, key, entityType);
-		return entityType;
+		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
 	}
 	public static final Item RED_CLUCKSHROOM_EGG = register("red_cluckshroom_egg", CluckshroomEggItem::new, new Item.Settings().maxCount(16));
 	public static final Item BROWN_CLUCKSHROOM_EGG = register("brown_cluckshroom_egg", CluckshroomEggItem::new, new Item.Settings().maxCount(16));
 	public static final Item CLUCKSHROOM_SPAWN_EGG = register("cluckshroom_spawn_egg", SpawnEggItem::new, new Item.Settings().spawnEgg(CLUCKSHROOM));
 	public static Item register(String name, Function<Item.Settings, Item> itemFactory, Item.Settings settings) {
 		RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, name));
-		Item item = itemFactory.apply(settings.registryKey(key));
-		Registry.register(Registries.ITEM, key, item);
-		return item;
+		return Registry.register(Registries.ITEM, key, itemFactory.apply(settings.registryKey(key)));
 	}
-
 	@Override
 	public void onInitialize() {
 		//Attributes

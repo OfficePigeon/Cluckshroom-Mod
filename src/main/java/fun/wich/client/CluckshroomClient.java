@@ -20,7 +20,7 @@ public class CluckshroomClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		EntityModelLayerRegistry.registerModelLayer(CLUCKSHROOM, CluckshroomEntityModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(CLUCKSHROOM_BABY, () -> CluckshroomEntityModel.getTexturedModelData().transform(CluckshroomEntityModel.BABY_TRANSFORMER));
+		EntityModelLayerRegistry.registerModelLayer(CLUCKSHROOM_BABY, () -> CluckshroomEntityModel.getTexturedModelData().transform(CluckshroomEntityModel.BABY_CLUCKSHROOM_TRANSFORMER));
 		EntityRendererFactories.register(CluckshroomMod.CLUCKSHROOM, CluckshroomEntityRenderer::new);
 		EntityRendererFactories.register(CluckshroomMod.CLUCKSHROOM_EGG, FlyingItemEntityRenderer::new);
 	}
