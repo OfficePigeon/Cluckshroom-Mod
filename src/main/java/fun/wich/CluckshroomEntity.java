@@ -17,11 +17,12 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.StringIdentifiable;
@@ -97,7 +98,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	public ActionResult interactMob(PlayerEntity player, Hand hand) {
 		ItemStack itemStack = player.getStackInHand(hand);
 		if (itemStack.isOf(Items.SHEARS) && this.isShearable()) {
-			if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
+			if (this.getWorld() instanceof ServerWorld serverWorld) {
 				this.sheared(serverWorld, SoundCategory.PLAYERS, itemStack);
 				this.emitGameEvent(GameEvent.SHEAR, player);
 				itemStack.damage(1, player, getSlotForHand(hand));
@@ -113,7 +114,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 			world.spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getBodyY(0.5F), this.getZ(), 1, 0, 0, 0, 0);
 			this.forEachShearedItem(world, CluckshroomMod.CLUCKSHROOM_SHEARING, shears, (worldx, stack) -> {
 				for (int i = 0; i < stack.getCount(); ++i) {
-					worldx.spawnEntity(new ItemEntity(this.getEntityWorld(), this.getX(), this.getBodyY(1), this.getZ(), stack.copyWithCount(1)));
+					worldx.spawnEntity(new ItemEntity(this.getWorld(), this.getX(), this.getBodyY(1), this.getZ(), stack.copyWithCount(1)));
 				}
 			});
 		});
@@ -131,7 +132,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		Vec3d vec3d = this.getVelocity();
 		if (!this.isOnGround() && vec3d.y < (double)0.0F) this.setVelocity(vec3d.multiply(1.0F, 0.6, 1.0F));
 		this.flapProgress += this.flapSpeed * 2.0F;
-		World world = this.getEntityWorld();
+		World world = this.getWorld();
 		if (world instanceof ServerWorld serverWorld) {
 			if (this.isAlive() && !this.isBaby() && !this.hasJockey()) {
 				if (--this.eggLayTime <= 0) {
@@ -186,16 +187,16 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		builder.add(VARIANT, Variant.DEFAULT.index);
 	}
 	@Override
-	public void readCustomDataFromNbt(NbtCompound view) {
-		super.readCustomDataFromNbt(view);
+	public void readCustomData(ReadView view) {
+		super.readCustomData(view);
 		this.hasJockey = view.getBoolean("IsChickenJockey", false);
-		view.getInt("EggLayTime").ifPresent((eggLayTime) -> this.eggLayTime = eggLayTime);
-		view.getInt("MushroomPlantTime").ifPresent((mushroomPlantTime) -> this.mushroomPlantTime = mushroomPlantTime);
+		view.getOptionalInt("EggLayTime").ifPresent((eggLayTime) -> this.eggLayTime = eggLayTime);
+		view.getOptionalInt("MushroomPlantTime").ifPresent((mushroomPlantTime) -> this.mushroomPlantTime = mushroomPlantTime);
 		this.setVariant(Variant.fromIndex(view.getInt("Type", 0)));
 	}
 	@Override
-	public void writeCustomDataToNbt(NbtCompound view) {
-		super.writeCustomDataToNbt(view);
+	public void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
 		view.putBoolean("IsChickenJockey", this.hasJockey);
 		view.putInt("EggLayTime", this.eggLayTime);
 		view.putInt("MushroomPlantTime", this.mushroomPlantTime);

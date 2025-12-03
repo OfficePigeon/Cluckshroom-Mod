@@ -23,7 +23,7 @@ public class CluckshroomEggEntity extends ThrownItemEntity {
 	public void handleStatus(byte status) {
 		if (status == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.getEntityWorld().addParticleClient(new ItemStackParticleEffect(ParticleTypes.ITEM, this.getStack()), this.getX(), this.getY(), this.getZ(), (this.random.nextFloat() - 0.5) * 0.08, (this.random.nextFloat() - 0.5) * 0.08, (this.random.nextFloat() - 0.5) * 0.08);
+				this.getWorld().addParticleClient(new ItemStackParticleEffect(ParticleTypes.ITEM, this.getStack()), this.getX(), this.getY(), this.getZ(), (this.random.nextFloat() - 0.5) * 0.08, (this.random.nextFloat() - 0.5) * 0.08, (this.random.nextFloat() - 0.5) * 0.08);
 			}
 		}
 	}
@@ -36,12 +36,12 @@ public class CluckshroomEggEntity extends ThrownItemEntity {
 	@Override
 	protected void onCollision(HitResult hitResult) {
 		super.onCollision(hitResult);
-		if (!this.getEntityWorld().isClient()) {
+		if (!this.getWorld().isClient()) {
 			if (this.random.nextInt(8) == 0) {
 				int i = 1;
 				if (this.random.nextInt(32) == 0) i = 4;
 				for (int j = 0; j < i; j++) {
-					CluckshroomEntity entity = CluckshroomMod.CLUCKSHROOM.create(this.getEntityWorld(), SpawnReason.TRIGGERED);
+					CluckshroomEntity entity = CluckshroomMod.CLUCKSHROOM.create(this.getWorld(), SpawnReason.TRIGGERED);
 					if (entity != null) {
 						entity.setBreedingAge(-24000);
 						entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0);
@@ -49,11 +49,11 @@ public class CluckshroomEggEntity extends ThrownItemEntity {
 						if (stack.isOf(CluckshroomMod.RED_CLUCKSHROOM_EGG)) entity.setVariant(CluckshroomEntity.Variant.RED);
 						else if (stack.isOf(CluckshroomMod.BROWN_CLUCKSHROOM_EGG)) entity.setVariant(CluckshroomEntity.Variant.BROWN);
 						if (!entity.recalculateDimensions(EMPTY_DIMENSIONS)) break;
-						this.getEntityWorld().spawnEntity(entity);
+						this.getWorld().spawnEntity(entity);
 					}
 				}
 			}
-			this.getEntityWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
+			this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
 			this.discard();
 		}
 	}
