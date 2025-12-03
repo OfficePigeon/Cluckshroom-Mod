@@ -177,8 +177,8 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	}
 	@Override public boolean isBreedingItem(ItemStack stack) { return stack.isIn(CluckshroomMod.TAG_CLUCKSHROOM_FOOD); }
 	@Override
-	protected int getXpToDrop(ServerWorld world) {
-		return this.hasJockey() ? 10 : super.getXpToDrop(world);
+	protected int getExperienceToDrop(ServerWorld world) {
+		return this.hasJockey() ? 10 : super.getExperienceToDrop(world);
 	}
 	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
