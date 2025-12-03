@@ -1,20 +1,15 @@
 package fun.wich.client;
 
+import fun.wich.CluckshroomEntity;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.model.BabyModelTransformer;
 import net.minecraft.client.render.entity.model.ChickenEntityModel;
-import net.minecraft.client.render.entity.model.ModelTransformer;
-import net.minecraft.client.render.entity.state.ChickenEntityRenderState;
 
-import java.util.Set;
-
-public class CluckshroomEntityModel extends ChickenEntityModel {
+public class CluckshroomEntityModel extends ChickenEntityModel<CluckshroomEntity> {
 	protected final ModelPart body;
 	protected final ModelPart body_mushroom;
-	public static final ModelTransformer BABY_CLUCKSHROOM_TRANSFORMER = new BabyModelTransformer(false, 5.0F, 2.0F, 2.0F, 1.99F, 24.0F, Set.of("head", "beak", "red_thing", "head_mushroom_1", "head_mushroom_2"));
 	public CluckshroomEntityModel(ModelPart modelPart) {
 		super(modelPart);
-		this.body = root.getChild("body");
+		this.body = modelPart.getChild("body");
 		this.body_mushroom = this.body.getChild("body_mushroom");
 	}
 	public static TexturedModelData getTexturedModelData() {
@@ -41,8 +36,8 @@ public class CluckshroomEntityModel extends ChickenEntityModel {
 		return TexturedModelData.of(modelData, 64, 32);
 	}
 	@Override
-	public void setAngles(ChickenEntityRenderState state) {
-		super.setAngles(state);
-		this.body_mushroom.visible = !state.baby;
+	public void animateModel(CluckshroomEntity state, float f, float g, float h) {
+		super.animateModel(state, f, g, h);
+		this.body_mushroom.visible = !state.isBaby();
 	}
 }

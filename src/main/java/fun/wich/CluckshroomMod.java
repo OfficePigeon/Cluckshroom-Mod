@@ -60,21 +60,19 @@ public class CluckshroomMod implements ModInitializer {
 	public static final EntityType<CluckshroomEggEntity> CLUCKSHROOM_EGG = register(
 			"cluckshroom_egg",
 			EntityType.Builder.<CluckshroomEggEntity>create(CluckshroomEggEntity::new, SpawnGroup.MISC)
-					.dropsNothing()
 					.dimensions(0.25F, 0.25F)
 					.maxTrackingRange(4)
 					.trackingTickInterval(10)
 	);
 	private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> type) {
-		RegistryKey<EntityType<?>> key = RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(MOD_ID, name));
-		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
+		Identifier id = Identifier.of(MOD_ID, name);
+		return Registry.register(Registries.ENTITY_TYPE, id, type.build(id.toString()));
 	}
 	public static final Item RED_CLUCKSHROOM_EGG = register("red_cluckshroom_egg", CluckshroomEggItem::new, new Item.Settings().maxCount(16));
 	public static final Item BROWN_CLUCKSHROOM_EGG = register("brown_cluckshroom_egg", CluckshroomEggItem::new, new Item.Settings().maxCount(16));
 	public static final Item CLUCKSHROOM_SPAWN_EGG = register("cluckshroom_spawn_egg", settings -> new SpawnEggItem(CLUCKSHROOM, 0xffffff, 0xffffff, settings), new Item.Settings());
 	public static Item register(String name, Function<Item.Settings, Item> itemFactory, Item.Settings settings) {
-		RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, name));
-		return Registry.register(Registries.ITEM, key, itemFactory.apply(settings.registryKey(key)));
+		return Registry.register(Registries.ITEM, RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, name)), itemFactory.apply(settings));
 	}
 	@Override
 	public void onInitialize() {

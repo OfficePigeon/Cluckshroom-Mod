@@ -12,15 +12,10 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class CluckshroomClient implements ClientModInitializer {
-	public static final EntityModelLayer CLUCKSHROOM = MakeModelLayer("cluckshroom");
-	public static final EntityModelLayer CLUCKSHROOM_BABY = MakeModelLayer("cluckshroom_baby");
-	private static EntityModelLayer MakeModelLayer(String id) {
-		return new EntityModelLayer(Identifier.of(CluckshroomMod.MOD_ID, id), "main");
-	}
+	public static final EntityModelLayer CLUCKSHROOM = new EntityModelLayer(Identifier.of(CluckshroomMod.MOD_ID, "cluckshroom"), "main");
 	@Override
 	public void onInitializeClient() {
 		EntityModelLayerRegistry.registerModelLayer(CLUCKSHROOM, CluckshroomEntityModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(CLUCKSHROOM_BABY, () -> CluckshroomEntityModel.getTexturedModelData().transform(CluckshroomEntityModel.BABY_CLUCKSHROOM_TRANSFORMER));
 		EntityRendererRegistry.register(CluckshroomMod.CLUCKSHROOM, CluckshroomEntityRenderer::new);
 		EntityRendererRegistry.register(CluckshroomMod.CLUCKSHROOM_EGG, FlyingItemEntityRenderer::new);
 	}

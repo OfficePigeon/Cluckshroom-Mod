@@ -8,20 +8,25 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.conversion.EntityConversionContext;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.StringIdentifiable;
@@ -79,7 +84,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		return this.isBaby() ? BABY_BASE_DIMENSIONS : super.getBaseDimensions(pose);
 	}
 	public static DefaultAttributeContainer.Builder createCluckshroomAttributes() {
-		return AnimalEntity.createAnimalAttributes().add(EntityAttributes.MAX_HEALTH, 4.0F).add(EntityAttributes.MOVEMENT_SPEED, 0.25F);
+		return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 4).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25);
 	}
 	public static boolean canSpawn(EntityType<CluckshroomEntity> ignoredType, WorldAccess world, SpawnReason ignoredSpawnReason, BlockPos pos, Random ignoredRandom) {
 		return world.getBlockState(pos.down()).isIn(CluckshroomMod.TAG_CLUCKSHROOMS_SPAWNABLE_ON) && isLightLevelValidForNaturalSpawn(world, pos);
@@ -97,26 +102,29 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	public ActionResult interactMob(PlayerEntity player, Hand hand) {
 		ItemStack itemStack = player.getStackInHand(hand);
 		if (itemStack.isOf(Items.SHEARS) && this.isShearable()) {
-			if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
-				this.sheared(serverWorld, SoundCategory.PLAYERS, itemStack);
-				this.emitGameEvent(GameEvent.SHEAR, player);
-				itemStack.damage(1, player, getSlotForHand(hand));
-			}
+			this.sheared(SoundCategory.PLAYERS);
+			this.emitGameEvent(GameEvent.SHEAR, player);
+			if (!this.getWorld().isClient) itemStack.damage(1, player, getSlotForHand(hand));
 			return ActionResult.SUCCESS;
 		}
 		else return super.interactMob(player, hand);
 	}
 	@Override
-	public void sheared(ServerWorld world, SoundCategory shearedSoundCategory, ItemStack shears) {
+	public void sheared(SoundCategory shearedSoundCategory) {
+		World world = this.getEntityWorld();
 		world.playSoundFromEntity(null, this, CluckshroomMod.ENTITY_CLUCKSHROOM_SHEAR, shearedSoundCategory, 1, 1);
-		this.convertTo(EntityType.CHICKEN, EntityConversionContext.create(this, false, false), (chicken) -> {
-			world.spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getBodyY(0.5F), this.getZ(), 1, 0, 0, 0, 0);
-			this.forEachShearedItem(world, CluckshroomMod.CLUCKSHROOM_SHEARING, shears, (worldx, stack) -> {
-				for (int i = 0; i < stack.getCount(); ++i) {
-					worldx.spawnEntity(new ItemEntity(this.getEntityWorld(), this.getX(), this.getBodyY(1), this.getZ(), stack.copyWithCount(1)));
-				}
-			});
-		});
+		this.convertTo(EntityType.CHICKEN, false);
+		if (world instanceof ServerWorld serverWorld) {
+			serverWorld.spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getBodyY(0.5), this.getZ(), 1, 0, 0, 0, 0);
+			LootTable lootTable = serverWorld.getServer().getReloadableRegistries().getLootTable(CluckshroomMod.CLUCKSHROOM_SHEARING);
+			LootContextParameterSet lootContextParameterSet = new LootContextParameterSet.Builder(serverWorld)
+					.add(LootContextParameters.ORIGIN, this.getPos())
+					.add(LootContextParameters.THIS_ENTITY, this)
+					.build(LootContextTypes.SHEARING);
+			for (ItemStack itemStack : lootTable.generateLoot(lootContextParameterSet)) {
+				this.dropStack(itemStack, this.getHeight());
+			}
+		}
 	}
 	@Override public boolean isShearable() { return this.isAlive() && !this.isBaby(); }
 	@Override
@@ -135,7 +143,16 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		if (world instanceof ServerWorld serverWorld) {
 			if (this.isAlive() && !this.isBaby() && !this.hasJockey()) {
 				if (--this.eggLayTime <= 0) {
-					if (this.forEachGiftedItem(serverWorld, CluckshroomMod.CLUCKSHROOM_LAY_GAMEPLAY, this::dropStack)) {
+					this.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+					this.dropItem(Items.EGG);
+					this.emitGameEvent(GameEvent.ENTITY_PLACE);
+					LootTable lootTable = serverWorld.getServer().getReloadableRegistries().getLootTable(CluckshroomMod.CLUCKSHROOM_LAY_GAMEPLAY);
+					LootContextParameterSet lootContextParameterSet = new LootContextParameterSet.Builder(serverWorld)
+							.add(LootContextParameters.ORIGIN, this.getPos())
+							.add(LootContextParameters.THIS_ENTITY, this)
+							.build(LootContextTypes.GENERIC);
+					for (ItemStack itemStack : lootTable.generateLoot(lootContextParameterSet)) {
+						this.dropStack(itemStack, this.getHeight());
 						this.playSound(CluckshroomMod.ENTITY_CLUCKSHROOM_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 						this.emitGameEvent(GameEvent.ENTITY_PLACE);
 					}
@@ -165,7 +182,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	}
 	@Override
 	public CluckshroomEntity createChild(ServerWorld serverWorld, PassiveEntity passiveEntity) {
-		CluckshroomEntity entity = CluckshroomMod.CLUCKSHROOM.create(serverWorld, SpawnReason.BREEDING);
+		CluckshroomEntity entity = CluckshroomMod.CLUCKSHROOM.create(serverWorld);
 		if (entity != null) entity.setVariant(passiveEntity instanceof CluckshroomEntity other ? this.chooseBabyVariant(other) : getVariant());
 		return entity;
 	}
@@ -176,10 +193,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		else return this.random.nextBoolean() ? variant : variant2;
 	}
 	@Override public boolean isBreedingItem(ItemStack stack) { return stack.isIn(CluckshroomMod.TAG_CLUCKSHROOM_FOOD); }
-	@Override
-	protected int getXpToDrop(ServerWorld world) {
-		return this.hasJockey() ? 10 : super.getXpToDrop(world);
-	}
+	@Override protected int getXpToDrop() { return this.hasJockey() ? 10 : super.getXpToDrop(); }
 	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);

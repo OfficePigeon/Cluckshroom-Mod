@@ -13,11 +13,12 @@ import net.minecraft.world.World;
 public class CluckshroomEggEntity extends ThrownItemEntity {
 	protected static final EntityDimensions EMPTY_DIMENSIONS = EntityDimensions.fixed(0, 0);
 	public CluckshroomEggEntity(EntityType<? extends CluckshroomEggEntity> entityType, World world) { super(entityType, world); }
-	public CluckshroomEggEntity(World world, LivingEntity owner, ItemStack stack) {
-		super(CluckshroomMod.CLUCKSHROOM_EGG, owner, world, stack);
+	public CluckshroomEggEntity(World world, LivingEntity owner) {
+		super(CluckshroomMod.CLUCKSHROOM_EGG, owner, world);
 	}
 	public CluckshroomEggEntity(World world, double x, double y, double z, ItemStack stack) {
-		super(CluckshroomMod.CLUCKSHROOM_EGG, x, y, z, world, stack);
+		super(CluckshroomMod.CLUCKSHROOM_EGG, x, y, z, world);
+		this.setItem(stack);
 	}
 	@Override
 	public void handleStatus(byte status) {
@@ -30,8 +31,7 @@ public class CluckshroomEggEntity extends ThrownItemEntity {
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		super.onEntityHit(entityHitResult);
-		//noinspection deprecation
-		entityHitResult.getEntity().serverDamage(this.getDamageSources().thrown(this, this.getOwner()), 0);
+		entityHitResult.getEntity().damage(this.getDamageSources().thrown(this, this.getOwner()), 0);
 	}
 	@Override
 	protected void onCollision(HitResult hitResult) {
@@ -41,7 +41,7 @@ public class CluckshroomEggEntity extends ThrownItemEntity {
 				int i = 1;
 				if (this.random.nextInt(32) == 0) i = 4;
 				for (int j = 0; j < i; j++) {
-					CluckshroomEntity entity = CluckshroomMod.CLUCKSHROOM.create(this.getEntityWorld(), SpawnReason.TRIGGERED);
+					CluckshroomEntity entity = CluckshroomMod.CLUCKSHROOM.create(this.getEntityWorld());
 					if (entity != null) {
 						entity.setBreedingAge(-24000);
 						entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), 0);
