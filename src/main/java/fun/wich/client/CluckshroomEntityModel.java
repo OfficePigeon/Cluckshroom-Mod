@@ -32,8 +32,8 @@ public class CluckshroomEntityModel extends ChickenEntityModel {
 		return TexturedModelData.of(modelData, 64, 32);
 	}
 	@Override
-	public void setAngles(ChickenEntityRenderState chickenEntityRenderState) {
-		super.setAngles(chickenEntityRenderState);
-		this.body_mushroom.visible = !chickenEntityRenderState.baby;
+	public void setAngles(ChickenEntityRenderState state) {
+		super.setAngles(state);
+		this.body_mushroom.visible = !state.baby;
 	}
 }

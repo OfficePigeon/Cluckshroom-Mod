@@ -42,16 +42,13 @@ public class CluckshroomMod implements ModInitializer {
 		Identifier id = Identifier.of(MOD_ID, path);
 		return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
 	}
-
 	public static final RegistryKey<LootTable> CLUCKSHROOM_LAY_GAMEPLAY = registerLootTable("gameplay/cluckshroom_lay");
 	public static final RegistryKey<LootTable> CLUCKSHROOM_SHEARING = registerLootTable("shearing/cluckshroom");
 	private static RegistryKey<LootTable> registerLootTable(String name) {
 		return Cluckshrooms_LootTablesMixin.registerLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(MOD_ID, name)));
 	}
-
 	public static final TagKey<Item> TAG_CLUCKSHROOM_FOOD = TagKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, "cluckshroom_food"));
 	public static final TagKey<Block> TAG_CLUCKSHROOMS_SPAWNABLE_ON = TagKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, "cluckshrooms_spawnable_on"));
-
 	public static final EntityType<CluckshroomEntity> CLUCKSHROOM = register(
 			"cluckshroom",
 			EntityType.Builder.create(CluckshroomEntity::new, SpawnGroup.MONSTER)
@@ -79,7 +76,6 @@ public class CluckshroomMod implements ModInitializer {
 		RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, name));
 		return Registry.register(Registries.ITEM, key, itemFactory.apply(settings.registryKey(key)));
 	}
-
 	@Override
 	public void onInitialize() {
 		//Attributes
