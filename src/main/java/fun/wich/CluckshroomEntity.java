@@ -177,8 +177,8 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	}
 	@Override public boolean isBreedingItem(ItemStack stack) { return stack.isIn(CluckshroomMod.TAG_CLUCKSHROOM_FOOD); }
 	@Override
-	protected int getExperienceToDrop(ServerWorld world) {
-		return this.hasJockey() ? 10 : super.getExperienceToDrop(world);
+	protected int getXpToDrop(ServerWorld world) {
+		return this.hasJockey() ? 10 : super.getXpToDrop(world);
 	}
 	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
@@ -188,10 +188,10 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound view) {
 		super.readCustomDataFromNbt(view);
-		this.hasJockey = view.getBoolean("IsChickenJockey", false);
-		view.getInt("EggLayTime").ifPresent((eggLayTime) -> this.eggLayTime = eggLayTime);
-		view.getInt("MushroomPlantTime").ifPresent((mushroomPlantTime) -> this.mushroomPlantTime = mushroomPlantTime);
-		this.setVariant(Variant.fromIndex(view.getInt("Type", 0)));
+		this.hasJockey = view.contains("IsChickenJockey") && view.getBoolean("IsChickenJockey");
+		if (view.contains("EggLayTime")) this.eggLayTime = view.getInt("EggLayTime");
+		if (view.contains("MushroomPlantTime")) this.mushroomPlantTime = view.getInt("MushroomPlantTime");
+		this.setVariant(Variant.fromIndex(view.contains("Type") ? view.getInt("Type") : 0));
 	}
 	@Override
 	public void writeCustomDataToNbt(NbtCompound view) {
@@ -215,7 +215,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		RED("red", 0, Blocks.RED_MUSHROOM.getDefaultState()),
 		BROWN("brown", 1, Blocks.BROWN_MUSHROOM.getDefaultState());
 		public static final Variant DEFAULT = RED;
-		private static final IntFunction<Variant> INDEX_MAPPER = ValueLists.createIndexToValueFunction(Variant::getIndex, values(), ValueLists.OutOfBoundsHandling.CLAMP);
+		private static final IntFunction<Variant> INDEX_MAPPER = ValueLists.createIdToValueFunction(Variant::getIndex, values(), ValueLists.OutOfBoundsHandling.CLAMP);
 		private final String name;
 		private final int index;
 		private final BlockState mushroom;
