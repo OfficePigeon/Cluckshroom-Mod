@@ -17,7 +17,6 @@ public class CluckshroomEntityModel extends ChickenEntityModel {
 		this.body = root.getChild("body");
 		this.body_mushroom = this.body.getChild("body_mushroom");
 	}
-
 	public static TexturedModelData getTexturedModelData() {
 		ModelData modelData = getModelData();// new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
@@ -32,7 +31,7 @@ public class CluckshroomEntityModel extends ChickenEntityModel {
 		body_mushroom.addChild("head_mushroom_1", ModelPartBuilder.create().uv(38, 9).cuboid(0, -2.5F, 0, 0, 5, 5), ModelTransform.of(0, -7.5F, 3, 0, 0, 0.7854F));
 		return TexturedModelData.of(modelData, 64, 32);
 	}
-
+	@Override
 	public void setAngles(ChickenEntityRenderState chickenEntityRenderState) {
 		super.setAngles(chickenEntityRenderState);
 		this.body_mushroom.visible = !chickenEntityRenderState.baby;

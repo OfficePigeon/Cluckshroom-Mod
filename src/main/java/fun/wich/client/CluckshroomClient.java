@@ -5,7 +5,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.minecraft.client.render.entity.EntityRendererFactories;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
@@ -20,8 +20,8 @@ public class CluckshroomClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		EntityModelLayerRegistry.registerModelLayer(CLUCKSHROOM, CluckshroomEntityModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(CLUCKSHROOM_BABY, () -> CluckshroomEntityModel.getTexturedModelData().transform(CluckshroomEntityModel.BABY_TRANSFORMER));
-		EntityRendererFactories.register(CluckshroomMod.CLUCKSHROOM, CluckshroomEntityRenderer::new);
-		EntityRendererFactories.register(CluckshroomMod.CLUCKSHROOM_EGG, FlyingItemEntityRenderer::new);
+		EntityModelLayerRegistry.registerModelLayer(CLUCKSHROOM_BABY, () -> CluckshroomEntityModel.getTexturedModelData().transform(CluckshroomEntityModel.BABY_CLUCKSHROOM_TRANSFORMER));
+		EntityRendererRegistry.register(CluckshroomMod.CLUCKSHROOM, CluckshroomEntityRenderer::new);
+		EntityRendererRegistry.register(CluckshroomMod.CLUCKSHROOM_EGG, FlyingItemEntityRenderer::new);
 	}
 }

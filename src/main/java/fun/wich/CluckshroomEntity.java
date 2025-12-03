@@ -17,12 +17,11 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.StringIdentifiable;
@@ -33,7 +32,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.function.IntFunction;
@@ -54,7 +52,6 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	public int eggLayTime;
 	public int mushroomPlantTime;
 	public boolean hasJockey = DEFAULT_HAS_JOCKEY;
-	@Nullable
 	private UUID lightningId;
 	public CluckshroomEntity(EntityType<? extends CluckshroomEntity> entityType, World world) {
 		super(entityType, world);
@@ -62,9 +59,11 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		this.mushroomPlantTime = this.random.nextInt(MUSHROOM_DELAY) + MUSHROOM_DELAY;
 		this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
 	}
+	@Override
 	public float getPathfindingFavor(BlockPos pos, WorldView world) {
 		return world.getBlockState(pos.down()).isOf(Blocks.MYCELIUM) ? 10.0F : world.getPhototaxisFavor(pos);
 	}
+	@Override
 	protected void initGoals() {
 		this.goalSelector.add(0, new SwimGoal(this));
 		this.goalSelector.add(1, new EscapeDangerGoal(this, 1.4));
@@ -75,6 +74,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
 		this.goalSelector.add(7, new LookAroundGoal(this));
 	}
+	@Override
 	public EntityDimensions getBaseDimensions(EntityPose pose) {
 		return this.isBaby() ? BABY_BASE_DIMENSIONS : super.getBaseDimensions(pose);
 	}
@@ -84,6 +84,7 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	public static boolean canSpawn(EntityType<CluckshroomEntity> ignoredType, WorldAccess world, SpawnReason ignoredSpawnReason, BlockPos pos, Random ignoredRandom) {
 		return world.getBlockState(pos.down()).isIn(CluckshroomMod.TAG_CLUCKSHROOMS_SPAWNABLE_ON) && isLightLevelValidForNaturalSpawn(world, pos);
 	}
+	@Override
 	public void onStruckByLightning(ServerWorld world, LightningEntity lightning) {
 		UUID uUID = lightning.getUuid();
 		if (!uUID.equals(this.lightningId)) {
@@ -92,18 +93,20 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 			this.playSound(CluckshroomMod.ENTITY_CLUCKSHROOM_CONVERT, 2.0F, 1.0F);
 		}
 	}
+	@Override
 	public ActionResult interactMob(PlayerEntity player, Hand hand) {
 		ItemStack itemStack = player.getStackInHand(hand);
 		if (itemStack.isOf(Items.SHEARS) && this.isShearable()) {
 			if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
 				this.sheared(serverWorld, SoundCategory.PLAYERS, itemStack);
 				this.emitGameEvent(GameEvent.SHEAR, player);
-				itemStack.damage(1, player, hand.getEquipmentSlot());
+				itemStack.damage(1, player, getSlotForHand(hand));
 			}
 			return ActionResult.SUCCESS;
 		}
 		else return super.interactMob(player, hand);
 	}
+	@Override
 	public void sheared(ServerWorld world, SoundCategory shearedSoundCategory, ItemStack shears) {
 		world.playSoundFromEntity(null, this, CluckshroomMod.ENTITY_CLUCKSHROOM_SHEAR, shearedSoundCategory, 1, 1);
 		this.convertTo(EntityType.CHICKEN, EntityConversionContext.create(this, false, false), (chicken) -> {
@@ -115,7 +118,8 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 			});
 		});
 	}
-	public boolean isShearable() { return this.isAlive() && !this.isBaby(); }
+	@Override public boolean isShearable() { return this.isAlive() && !this.isBaby(); }
+	@Override
 	public void tickMovement() {
 		super.tickMovement();
 		this.lastFlapProgress = this.flapProgress;
@@ -150,15 +154,16 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 			}
 		}
 	}
-	protected boolean isFlappingWings() { return this.speed > this.field_28639; }
-	protected void addFlapEffects() { this.field_28639 = this.speed + this.maxWingDeviation / 2.0F; }
-	protected SoundEvent getAmbientSound() { return CluckshroomMod.ENTITY_CLUCKSHROOM_AMBIENT; }
-	protected SoundEvent getHurtSound(DamageSource source){ return CluckshroomMod.ENTITY_CLUCKSHROOM_HURT; }
-	protected SoundEvent getDeathSound(){ return CluckshroomMod.ENTITY_CLUCKSHROOM_DEATH; }
+	@Override protected boolean isFlappingWings() { return this.speed > this.field_28639; }
+	@Override protected void addFlapEffects() { this.field_28639 = this.speed + this.maxWingDeviation / 2.0F; }
+	@Override protected SoundEvent getAmbientSound() { return CluckshroomMod.ENTITY_CLUCKSHROOM_AMBIENT; }
+	@Override protected SoundEvent getHurtSound(DamageSource source){ return CluckshroomMod.ENTITY_CLUCKSHROOM_HURT; }
+	@Override protected SoundEvent getDeathSound(){ return CluckshroomMod.ENTITY_CLUCKSHROOM_DEATH; }
+	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
 		this.playSound(CluckshroomMod.ENTITY_CLUCKSHROOM_STEP, 0.15F, 1.0F);
 	}
-	@Nullable
+	@Override
 	public CluckshroomEntity createChild(ServerWorld serverWorld, PassiveEntity passiveEntity) {
 		CluckshroomEntity entity = CluckshroomMod.CLUCKSHROOM.create(serverWorld, SpawnReason.BREEDING);
 		if (entity != null) entity.setVariant(passiveEntity instanceof CluckshroomEntity other ? this.chooseBabyVariant(other) : getVariant());
@@ -170,23 +175,27 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 		if (variant == variant2 && this.random.nextInt(MUTATION_CHANCE) == 0) return variant == Variant.BROWN ? Variant.RED : Variant.BROWN;
 		else return this.random.nextBoolean() ? variant : variant2;
 	}
-	public boolean isBreedingItem(ItemStack stack) { return stack.isIn(CluckshroomMod.TAG_CLUCKSHROOM_FOOD); }
+	@Override public boolean isBreedingItem(ItemStack stack) { return stack.isIn(CluckshroomMod.TAG_CLUCKSHROOM_FOOD); }
+	@Override
 	protected int getExperienceToDrop(ServerWorld world) {
 		return this.hasJockey() ? 10 : super.getExperienceToDrop(world);
 	}
+	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
 		builder.add(VARIANT, Variant.DEFAULT.index);
 	}
-	protected void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	@Override
+	public void readCustomDataFromNbt(NbtCompound view) {
+		super.readCustomDataFromNbt(view);
 		this.hasJockey = view.getBoolean("IsChickenJockey", false);
-		view.getOptionalInt("EggLayTime").ifPresent((eggLayTime) -> this.eggLayTime = eggLayTime);
-		view.getOptionalInt("MushroomPlantTime").ifPresent((mushroomPlantTime) -> this.mushroomPlantTime = mushroomPlantTime);
+		view.getInt("EggLayTime").ifPresent((eggLayTime) -> this.eggLayTime = eggLayTime);
+		view.getInt("MushroomPlantTime").ifPresent((mushroomPlantTime) -> this.mushroomPlantTime = mushroomPlantTime);
 		this.setVariant(Variant.fromIndex(view.getInt("Type", 0)));
 	}
-	protected void writeCustomData(WriteView view) {
-		super.writeCustomData(view);
+	@Override
+	public void writeCustomDataToNbt(NbtCompound view) {
+		super.writeCustomDataToNbt(view);
 		view.putBoolean("IsChickenJockey", this.hasJockey);
 		view.putInt("EggLayTime", this.eggLayTime);
 		view.putInt("MushroomPlantTime", this.mushroomPlantTime);
@@ -194,7 +203,8 @@ public class CluckshroomEntity extends AnimalEntity implements Shearable {
 	}
 	public void setVariant(Variant variant) { this.dataTracker.set(VARIANT, variant.index); }
 	public Variant getVariant() { return Variant.fromIndex(this.dataTracker.get(VARIANT)); }
-	public boolean canImmediatelyDespawn(double distanceSquared) { return this.hasJockey(); }
+	@Override public boolean canImmediatelyDespawn(double distanceSquared) { return this.hasJockey(); }
+	@Override
 	protected void updatePassengerPosition(Entity passenger, Entity.PositionUpdater positionUpdater) {
 		super.updatePassengerPosition(passenger, positionUpdater);
 		if (passenger instanceof LivingEntity livingEntity) livingEntity.bodyYaw = this.bodyYaw;

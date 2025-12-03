@@ -32,7 +32,7 @@ public abstract class Cluckshrooms_ZombieEntityMixin extends HostileEntity {
 				if (!list.isEmpty()) {
 					CluckshroomEntity chickenEntity = list.getFirst();
 					chickenEntity.setHasJockey(true);
-					this.startRiding(chickenEntity, false, false);
+					this.startRiding(chickenEntity, false);
 				}
 			}
 		}
