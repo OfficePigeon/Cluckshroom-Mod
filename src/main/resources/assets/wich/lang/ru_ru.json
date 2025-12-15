@@ -1,0 +1,14 @@
+{
+  "subtitles.entity.cluckshroom.convert": "Кудахтогриб превращается",
+  "subtitles.entity.cluckshroom.ambient": "Кудахтогриб кудахчет",
+  "subtitles.entity.cluckshroom.death": "Кудахтогриб погибает",
+  "subtitles.entity.cluckshroom.egg": "Кудахтогриб снесла яйцо",
+  "subtitles.entity.cluckshroom.mushroom": "Кудахтогриб растёт",
+  "subtitles.entity.cluckshroom.hurt": "Кудахтогриб ранен",
+  
+  "entity.wich.cluckshroom": "Кудахтогриб",
+  "item.wich.cluckshroom_spawn_egg": "Яйцо призыва кудахтогриба",
+  "item.wich.red_cluckshroom_egg": "Красное яйцо кудахтогриба",
+  "item.wich.brown_cluckshroom_egg": "Коричневое яйцо кудахтогриба",
+  "modmenu.descriptionTranslation.wich_cluckshrooms": "Добавляет кудахтогриба из Minecraft Earth"
+}
