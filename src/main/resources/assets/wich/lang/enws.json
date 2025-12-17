@@ -1,0 +1,13 @@
+{
+  "subtitles.entity.cluckshroom.convert": "Mushroom Fowl transforms",
+  "subtitles.entity.cluckshroom.ambient": "Mushroom Fowl clucks",
+  "subtitles.entity.cluckshroom.death": "Mushroom Fowl perishes",
+  "subtitles.entity.cluckshroom.egg": "Mushroom Fowl lays egg",
+  "subtitles.entity.cluckshroom.mushroom": "Mushroom Fowl plants",
+  "subtitles.entity.cluckshroom.hurt": "Mushroom Fowl cries out",
+  
+  "entity.wich.cluckshroom": "Mushroom Fowl",
+  "item.wich.cluckshroom_spawn_egg": "Mushroom Fowl Spawn Egg",
+  "item.wich.red_cluckshroom_egg": "Red Mushroom Fowl Egg",
+  "item.wich.brown_cluckshroom_egg": "Brown Mushroom Fowl Egg"
+}

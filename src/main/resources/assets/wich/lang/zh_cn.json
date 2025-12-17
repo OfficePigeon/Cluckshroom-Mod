@@ -1,0 +1,14 @@
+{
+  "subtitles.entity.cluckshroom.convert": "咯咯菇：转化",
+  "subtitles.entity.cluckshroom.ambient": "咯咯菇：咯咯叫",
+  "subtitles.entity.cluckshroom.death": "咯咯菇：死亡",
+  "subtitles.entity.cluckshroom.egg": "咯咯菇：下蛋",
+  "subtitles.entity.cluckshroom.mushroom": "咯咯菇：种植",
+  "subtitles.entity.cluckshroom.hurt": "咯咯菇：受伤",
+  
+  "entity.wich.cluckshroom": "咯咯菇",
+  "item.wich.cluckshroom_spawn_egg": "咯咯菇刷怪蛋",
+  "item.wich.red_cluckshroom_egg": "红色咯咯菇蛋",
+  "item.wich.brown_cluckshroom_egg": "棕色咯咯菇蛋",
+  "modmenu.descriptionTranslation.wich_cluckshrooms": "添加了来自《我的世界：地球》和《我的世界：地下城》的鸡蘑菇。"
+}
